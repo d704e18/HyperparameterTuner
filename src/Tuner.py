@@ -74,11 +74,11 @@ class Tuner:
             self.set_callbacks(param_test_name)
 
             # Running Sam w
-            previous_param_performance = self.sam.run(params=param_suggestion, name=param_test_name)
+            previous_param_performance = self.sam.run(name=param_test_name, **param_suggestion[0])
 
             self.param_log.log_score(previous_param_performance)
             self._save_log(save_model=save_model)
-            self._save_log(save_model=True, save_path="C:/SOFTWARE and giggles/NMR_tuning")
+            # self._save_log(save_model=True, save_path="C:/SOFTWARE and giggles/NMR_tuning")
 
             trials = trials+1
 
@@ -149,10 +149,10 @@ class Tuner:
                                               monitor='val_loss',
                                               filepath=self.save_path+"/{}".format(name))
 
-        early_stopping = cb.EarlyStopping(monitor="val_loss", patience=10)
+        early_stopping = cb.EarlyStopping(monitor="val_loss", patience=24)
 
         reduce_lr = cb.ReduceLROnPlateau(monitor='val_loss', factor=0.5,
-                                         patience=3, min_lr=0.0001)
+                                         patience=6, min_lr=0.0001)
 
         callbacks = [model_checkpoint, early_stopping, reduce_lr]
         self.sam.set_callbacks(callbacks)

@@ -54,7 +54,7 @@ class ParamLog:
         if self._actual_param_log is None:
             self._actual_param_log = actual_param.reshape((-1, self.n_params))
             self._unscaled_param_log = unscaled_param.reshape((-1, self.n_params))
-            self._score = score.reshape((-1, 1))
+            self._score = score.reshape((-1, 1)).astype(np.float64)
 
             return True
         else:
